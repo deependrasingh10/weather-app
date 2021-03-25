@@ -9,19 +9,28 @@ class Dashboard extends Component {
   state = {
     fullData: [],
     dailyData: [],
-    degreeType: "fahrenheit"
+    degreeType: "fahrenheit",
+    selectedlang: 'hi'
   }
 
   updateForecastDegree = event => {
-    console.log(event.target.value);
     this.setState({
       degreeType: event.target.value
     }, () => console.log(this.state))
   }
+  handleChangelang = (event) => {
+    console.log(event.value);
+    this.setState({ selectedlang: event.value });
 
+    this.getWeatherForecast(event.value);
+
+    
+  }
   componentDidMount = () => {
-    const weatherURL =`${config.apiUrl}zip=11102&units=imperial&lang=hi&APPID=${config.appApiId}`;
-    console.log(`MyConfig: ${weatherURL}`)
+    this.getWeatherForecast('hi');
+  }
+  getWeatherForecast = (lang) => {
+    const weatherURL =`${config.apiUrl}zip=11102&units=imperial&lang=${lang}&APPID=${config.appApiId}`;
     fetch(weatherURL)
     .then(res => res.json())
     .then(data => {
@@ -43,7 +52,7 @@ class Dashboard extends Component {
         
         <Grid container >
           <Grid item xs={12} sm={12} md={12} lg={12}>
-            <MenuBar selectLang={true} />
+            <MenuBar selectLang={true} handleChangelang={this.handleChangelang} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{margin: "10px"}} className='jumbotron'>
             <Grid container justify='center' alignItems='center'>

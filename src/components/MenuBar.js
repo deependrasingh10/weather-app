@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Select from 'react-select';
+import { langOptions } from './language';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,11 +19,14 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  select: {
+    width: '150px',
+    color: '#000'
+  }
 }));
 
 export default function MenuBar(props) {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -33,7 +38,12 @@ export default function MenuBar(props) {
             Weather App
           </Typography>
           { props.selectLang ?
-           <Button color="inherit" onClick={props.handleClick} >Language</Button> :
+           <Select options={langOptions}
+                  defaultValue={langOptions[17]}
+                  className={classes.select}
+                  isSearchable='true'
+                  onChange={props.handleChangelang}
+            /> :
            <Button color="inherit" onClick={props.handleClick} >Login</Button>
           }
           
