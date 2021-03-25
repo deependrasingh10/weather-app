@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import { withRouter } from "react-router-dom";
 import { Button } from '@material-ui/core';
 import MenuBar from './MenuBar';
+import * as config from './../myconfig';
 
 class Login extends Component {
   constructor(props){
@@ -12,9 +13,10 @@ class Login extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 	componentDidMount() {
+	const appId = config.appIdWeb;
 	  window.fbAsyncInit = function() {
 	    window.FB.init({
-	      appId      : '233405661863175',
+	      appId      : appId,
 	      cookie     : true,
 	      xfbml      : true, 
 	      version    : 'v2.0'

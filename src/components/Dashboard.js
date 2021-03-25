@@ -84,7 +84,7 @@ class Dashboard extends Component {
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} >
             <Grid container justify='center' alignItems='center'>
-            <Typography variant='h5'>New York, US</Typography>
+            <Typography variant='h5'>Gurgaon, IN</Typography>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{padding: "10px"}} >
