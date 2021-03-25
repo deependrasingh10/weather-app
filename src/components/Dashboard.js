@@ -4,13 +4,14 @@ import DegreeToggle from './DegreeToggle';
 import MenuBar from './MenuBar';
 import { Grid, Typography } from '@material-ui/core';
 import * as config from './../myconfig';
+import Geocode from "react-geocode";
 
 class Dashboard extends Component {
   state = {
     fullData: [],
     dailyData: [],
     degreeType: "fahrenheit",
-    selectedlang: 'hi'
+
   }
 
   updateForecastDegree = event => {
@@ -21,16 +22,26 @@ class Dashboard extends Component {
   handleChangelang = (event) => {
     console.log(event.value);
     this.setState({ selectedlang: event.value });
-
     this.getWeatherForecast(event.value);
-
-    
   }
   componentDidMount = () => {
-    this.getWeatherForecast('hi');
+    let lat;
+    let lon;
+    // Geocode.setApiKey(config.googleApiKey);
+    navigator.geolocation.getCurrentPosition(function(position) {
+      // console.log("Latitude is :", position);
+      // console.log("Longitude is :", position.coords.longitude);
+      lat=position.coords.latitude;
+      lon=position.coords.longitude;
+    });
+    this.getWeatherForecast('hi', lat, lon);
   }
-  getWeatherForecast = (lang) => {
-    const weatherURL =`${config.apiUrl}zip=11102&units=imperial&lang=${lang}&APPID=${config.appApiId}`;
+
+  getWeatherForecast = (lang, lat, lon) => {
+    const lat1= lat ? lat : 28.4259974;
+    const lon1= lon ? lon : 76.9450375;
+    // const weatherURL =`${config.apiUrl}zip=11102&units=imperial&lang=${lang}&APPID=${config.appApiId}`;
+    const weatherURL =`${config.apiUrl}lat=${lat1}&lon=${lon1}&units=imperial&lang=${lang}&APPID=${config.appApiId}`;
     fetch(weatherURL)
     .then(res => res.json())
     .then(data => {
@@ -40,6 +51,18 @@ class Dashboard extends Component {
         dailyData: dailyData
       }, () => console.log(this.state))
     })
+
+    Geocode.setLanguage(lang);
+    Geocode.fromLatLng(lat1, lon1).then(
+      (response) => {
+        const address = response.results[0].formatted_address;
+        console.log(address);
+      },
+      (error) => {
+        console.log(error);
+        console.error(error);
+      }
+    );
   }
 
   showDayCards = () => {
